@@ -1,5 +1,6 @@
 import MatchCard from "~/components/MatchCard";
 import Icon from "~/components/Icon";
+import DateSelect from "../../components/DateSelect";
 
 function Dashboard() {
   return (
@@ -22,11 +23,7 @@ function Dashboard() {
         </section>
 
         <section id="content" className="container max-w-3xl p-4 space-y-4">
-          <div className="flex p-4 space-x-4 justify-center items-center">
-            <Icon name="arrowLeft" className="text-red-500" />
-            <span className="font-bold text-base">24 de novembro</span>
-            <Icon name="arrowRight" className="text-red-500" />
-          </div>
+          <DateSelect />
 
           <div className="space-y-4">
             <MatchCard
