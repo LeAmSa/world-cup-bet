@@ -1,10 +1,17 @@
 import Router from "@koa/router";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import * as users from "./app/users/index.js";
+import * as bets from "./app/bets/index.js";
+import * as matches from "./app/matches/index.js";
 
 export const router = new Router();
 
-router.get("/", async (ctx) => {
-  ctx.body = "Hello World";
-});
+//USERS
+router.get("/login", users.login);
+router.post("/users", users.create);
+
+//BETS
+// router.get("/bets", bets.list);
+router.post("/bets", bets.create);
+
+//MATCHES
+router.get("/matches", matches.list);
