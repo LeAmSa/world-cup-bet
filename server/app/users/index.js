@@ -60,11 +60,37 @@ export const login = async (ctx) => {
       name: user.name,
       expiresIn: "7d",
     },
-    process.envJWT_SECRET
+    process.env.JWT_SECRET
   );
 
   ctx.body = {
     user: result,
     accessToken,
+  };
+};
+
+export const bets = async (ctx) => {
+  const username = ctx.request.params.username;
+
+  const user = await prisma.user.findUnique({
+    where: {
+      username,
+    },
+  });
+
+  if (!user) {
+    ctx.status = 404;
+    return;
+  }
+
+  const bets = await prisma.bet.findMany({
+    where: {
+      userId: user.id,
+    },
+  });
+
+  ctx.body = {
+    name: user.name,
+    bets,
   };
 };
