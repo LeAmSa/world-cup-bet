@@ -10,8 +10,10 @@ router.get("/login", users.login);
 router.post("/users", users.create);
 
 //BETS
-// router.get("/bets", bets.list);
 router.post("/bets", bets.create);
 
 //MATCHES
 router.get("/matches", matches.list);
+
+//BETS DO USUÁRIO
+router.get("/:username", users.bets);
