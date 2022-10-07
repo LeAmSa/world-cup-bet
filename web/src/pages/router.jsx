@@ -5,6 +5,8 @@ import Login from "./Login";
 import Profile from "./Profile";
 import SignUp from "./SignUp";
 
+import { useLocalStorage } from "react-use";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -23,7 +25,7 @@ const router = createBrowserRouter([
     element: <Dashboard />,
   },
   {
-    path: "/profile",
+    path: "/:username",
     element: <Profile />,
   },
 ]);
