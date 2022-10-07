@@ -3,6 +3,9 @@ import Input from "~/components/Input";
 import axios from "axios";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { Navigate } from "react-router-dom";
+import { useLocalStorage } from "react-use";
+import { useState } from "react";
 
 //Validando os dados
 const validationSchema = yup.object().shape({
@@ -16,16 +19,21 @@ const validationSchema = yup.object().shape({
 });
 
 function SignUp() {
+  const [auth, setAuth] = useLocalStorage("auth", {});
+  const [created, setCreated] = useState(false);
   const formik = useFormik({
     onSubmit: async (values) => {
       const res = await axios({
         method: "post",
-        baseURL: "http://localhost:3000",
+        baseURL: import.meta.env.VITE_API_URL,
         url: "/users",
         data: values,
       });
 
-      console.log(res.data);
+      console.log(res);
+      if (res.status === 201) {
+        setCreated(true);
+      }
     },
     initialValues: {
       name: "",
@@ -36,7 +44,15 @@ function SignUp() {
     validationSchema,
   });
 
-  console.log(formik.errors);
+  // console.log(formik.errors);
+
+  if (auth?.user?.id) {
+    return <Navigate to="/dashboard" replace={true} />;
+  }
+
+  if (created) {
+    return <Navigate to="/login" replace={true} />;
+  }
 
   return (
     <div>
@@ -101,9 +117,9 @@ function SignUp() {
           <button
             type="submit"
             className="block w-full text-white bg-red-500 text-lg md:text-xl px-6 py-3 rounded-xl text-center disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={!formik.isValid}
+            disabled={!formik.isValid || formik.isSubmitting}
           >
-            Criar minha conta
+            {formik.isSubmitting ? "Carregando..." : "Criar minha conta"}
           </button>
         </form>
       </main>
@@ -112,3 +128,5 @@ function SignUp() {
 }
 
 export default SignUp;
+
+//Colocar um componente de loading no Lugar de Carregando...
