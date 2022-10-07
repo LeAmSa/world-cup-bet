@@ -1,22 +1,19 @@
-import { useState } from "react";
 import Icon from "~/components/Icon";
 
-import { addDays, subDays, format } from "date-fns";
+import { addDays, subDays, format, formatISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
-function DateSelect() {
-  const [currentDate, setCurrentDate] = useState(
-    new Date("2022-11-20T00:00:00Z")
-  );
+function DateSelect({ currentDate, onChange }) {
+  const date = new Date(currentDate);
 
   const goToPrevDay = () => {
-    const prevDay = subDays(currentDate, 1);
-    setCurrentDate(prevDay);
+    const prevDay = subDays(date, 1);
+    onChange(formatISO(prevDay));
   };
 
   const goToNextDay = () => {
-    const nextDay = addDays(currentDate, 1);
-    setCurrentDate(nextDay);
+    const nextDay = addDays(date, 1);
+    onChange(formatISO(nextDay));
   };
 
   return (
@@ -27,7 +24,7 @@ function DateSelect() {
         onClick={goToPrevDay}
       />
       <span className="font-bold text-base">
-        {format(currentDate, "d 'de' MMMM", { locale: ptBR })}
+        {format(date, "d 'de' MMMM", { locale: ptBR })}
       </span>
       <Icon
         name="arrowRight"
